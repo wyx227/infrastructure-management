@@ -3,7 +3,7 @@ lines = file.readlines()
 position = 0
 header = ['Hostname','MAC','IP']
 format_string = "{: >20} {: >25} {: >15}"
-
+info_string = "IP Range: \n 0...10: Infrastructural Devices and VMs \n 11...20: Network Devices \n 21...40: Persistent VMs \n 41...50: Desktop and Laptop PCs \n 51...60: Mobil>print(info_string)
 print(format_string.format(*header))
 print("=================================================================")
 
