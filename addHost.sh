@@ -2,7 +2,7 @@
 
 MAC=$3
 
-if [ -z "$2" || -z "$1" ]
+if [ -z "$2" ] || [ -z "$1" ]
 then
         echo "Usage: addHost <HOSTNAME> <IP> <MAC>"
         exit 1
