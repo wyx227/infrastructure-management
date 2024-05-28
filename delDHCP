@@ -1,0 +1,37 @@
+#!/usr/bin/env python
+import os
+import sys
+
+file = open('/etc/dhcp/dhcpd.conf', 'r')
+lines = file.readlines()
+
+try:
+    host_name = sys.argv[1]
+except:
+     print("No host name given. Usage: delDHCP <HOSTNAME> \n")
+     exit()     
+
+
+position = 0
+found = 0
+
+
+for line in lines:
+        position = position + 1
+        if(line.startswith('host ' + host_name)):
+            lines[position-1] = "#" + lines[position-1]
+            lines[position] = "#" + lines[position]
+            lines[position+1] = "#" + lines[position+1]
+            lines[position+2] = "#" + lines[position+2]
+            found = 1
+
+        
+        
+if(found != 1):
+    print("No such host found\n")
+
+out = open('/etc/dhcp/dhcpd.conf', 'w')
+out.writelines(lines)
+out.close()
+
+os.system('systemctl restart isc-dhcp-server')
