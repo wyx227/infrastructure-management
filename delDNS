@@ -1,0 +1,34 @@
+#!/usr/bin/env python
+
+
+import os
+import sys
+
+
+file = open('/etc/dnsmasq.conf', 'r')
+try:   
+    fqdn = sys.argv[1]
+except:
+    print("Usage: delDNS <FQDN>")
+    exit()
+
+
+lines = file.readlines()
+found = 0
+position = 0
+
+for line in lines:
+    if(line.startswith('address=/' + fqdn)):
+        lines[position] = '#' + lines[position]
+        found = 1
+    position = position + 1
+
+
+if(found != 1):
+    print("No such FQDN found")
+
+out = open('/etc/dnsmasq.conf', 'w')
+out.writelines(lines)
+out.close()
+
+os.system('systemctl restart dnsmasq')
