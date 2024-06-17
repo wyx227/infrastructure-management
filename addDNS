@@ -18,7 +18,7 @@ except:
 file = open('/etc/dnsmasq.conf', 'a')
 fqdn = sys.argv[1]
 ip = sys.argv[2]
-record = "address=/" + fqdn + "/" + ip
+record = "address=/" + fqdn + "/" + ip + "\n"
 file.write(record)
 file.close()
 
