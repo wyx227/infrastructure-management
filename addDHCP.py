@@ -59,6 +59,7 @@ file.close()
 if(found == 1):
     print("Host exists already")
     print(message_found)
+    exit()
 else:
     success_message = "Adding host to configuration: \n" + "Host: " + host_name + "\n" + "MAC: " + mac +"\n" + "IP: " + ip + "\n"
     print(success_message)
@@ -67,7 +68,7 @@ else:
     out.writelines(entry)
     out.close()
      
-if(os.system('systemctl restart isc-dhcp-server') != 0):
+if(os.system('systemctl restart isc-dhcp-server') == 0):
     print("Finished!\n")
 else:
     print("Cannot restart dhcp server\n")

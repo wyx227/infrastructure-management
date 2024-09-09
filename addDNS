@@ -23,7 +23,7 @@ file.write(record)
 file.close()
 
 
-if(os.system('systemctl restart dnsmasq') != 0):
+if(os.system('systemctl restart dnsmasq') == 0):
     print("Update successful\n")
 else:
     print("Cannot restart dnsmasq\n")
