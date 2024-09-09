@@ -137,7 +137,30 @@ def printConfig():
     for i in range(len(ip_entry_sorted)):
         print(format_string.format(*ip_entry_sorted[i]))    
 
-
+def isValidMACAddress(str):
+ 
+    # Regex to check valid
+    # MAC address
+    regex = ("^([0-9A-Fa-f]{2}[:-])" +
+             "{5}([0-9A-Fa-f]{2})|" +
+             "([0-9a-fA-F]{4}\\." +
+             "[0-9a-fA-F]{4}\\." +
+             "[0-9a-fA-F]{4})$")
+ 
+    # Compile the ReGex
+    p = re.compile(regex)
+ 
+    # If the string is empty
+    # return false
+    if (str == None):
+        return False
+ 
+    # Return if the string
+    # matched the ReGex
+    if(re.search(p, str)):
+        return True
+    else:
+        return False
 
 
 def main():
@@ -145,28 +168,32 @@ def main():
     match command:
         case "add":
             readConfig("dhcpd.conf")
+            name = sys.argv[2]
+            if(len(sys.argv) == 5):
+                ip = sys.argv[4]                
+                mac = sys.argv[3]
+                if isValidMACAddress(mac) == False:
+                    print("Invalid mac\n")
+                    exit()
+
+            elif(len(sys.argv) == 4):
+                ip = sys.argv[3]
+                mac = "00:60:2F:%02x:%02x:%02x" % (random.randint(0, 255),
+                             random.randint(0, 255),
+                             random.randint(0, 255))
+            else:
+                print("Missing input. Usage: addDHCP <HOSTNAME> <MAC> <IP>\n")
+                exit()
+
             try:
-                ip = ipaddress.ip_address(sys.argv[4])
+                ip_temp = ipaddress.ip_address(ip)
             except ValueError:
-                print('address/netmask is invalid: %s' % sys.argv[4])
+                print('address/netmask is invalid: %s' % ip)
                 exit()
             except:
-                print("Missing input. Usage: addDHCP <HOSTNAME> <MAC> <IP>\n")
+                print("Missing input. Usage: addDHCP <HOSTNAME> <MAC1> <IP>\n")
                 exit()            
-            ip = sys.argv[4]
-            name = sys.argv[2]
-            if not name:
-                print("Missing input.")
-                exit()
-
-            mac = sys.argv[3]
-            if not mac:
-                mac = os.system("genMAC")
-
-            if re.match("[0-9a-f]{2}([-:]?)[0-9a-f]{2}(\\1[0-9a-f]{2}){4}$", mac.lower()) == False:
-                print("Invalid mac\n")
-                exit()
-
+            
             addHost(name, mac, ip)
             printConfig()
 
