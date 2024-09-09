@@ -31,4 +31,7 @@ out = open('/etc/dnsmasq.conf', 'w')
 out.writelines(lines)
 out.close()
 
-os.system('systemctl restart dnsmasq')
+if(os.system('systemctl restart dnsmasq') != 0):
+    print("Update successful\n")
+else:
+    print("Cannot restart dnsmasq\n")

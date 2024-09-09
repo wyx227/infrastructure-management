@@ -62,10 +62,12 @@ if(found == 1):
 else:
     success_message = "Adding host to configuration: \n" + "Host: " + host_name + "\n" + "MAC: " + mac +"\n" + "IP: " + ip + "\n"
     print(success_message)
-    out = open('dhcpd.conf', 'a')
+    out = open('/etc/dhcp/dhcpd.conf', 'a')
     entry = 'host '+ host_name + '{\n' + '  hardware ethernet ' + mac + ';\n' + '  fixed-address ' + ip + ';\n' + '}\n'
     out.writelines(entry)
     out.close()
      
-os.system('systemctl restart isc-dhcp-server')
-print("Finished!\n")
+if(os.system('systemctl restart isc-dhcp-server') != 0):
+    print("Finished!\n")
+else:
+    print("Cannot restart dhcp server\n")
