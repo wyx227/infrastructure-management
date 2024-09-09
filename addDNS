@@ -22,4 +22,8 @@ record = "address=/" + fqdn + "/" + ip + "\n"
 file.write(record)
 file.close()
 
-os.system('systemctl restart dnsmasq')
+
+if(os.system('systemctl restart dnsmasq') != 0):
+    print("Update successful\n")
+else:
+    print("Cannot restart dnsmasq\n")
